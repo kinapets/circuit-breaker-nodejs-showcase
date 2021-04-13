@@ -25,7 +25,7 @@
     "test:cover": "yarn test --coverage",
     "start": "node -r dotenv/config dist/src/index.js dotenv_config_path=./config/.env",
     "clean": "concurrently 'rm -rf dist' 'rm -rf coverage'",
-    "perf:test": "artillery quick --count 2 --duration 1000 --num 1 -k http://localhost:8000/api/v1/example?name=test"
+    "perf:test": "artillery quick --duration 200 --rate 10 http://localhost:8000/api/v1/example?name=test"
   },
   "dependencies": {
     "@qest/error-utils": "^1.0.1",
