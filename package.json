@@ -13,6 +13,8 @@
     "build": "rimraf dist && tsc",
     "build:check": "tsc --noemit",
     "dev": "cross-env NODE_ENV=dev ts-node-dev --transpile-only --no-notify -r dotenv/config src/index.ts dotenv_config_path=./config/.env | pino-pretty",
+    "dev:first": "ts-node-dev --transpile-only --no-notify  src/simple-services.ts first",
+    "dev:second": "ts-node-dev --transpile-only --no-notify src/simple-services.ts second",
     "eslint:fix": "eslint . --fix --ext .ts",
     "eslint:check": "eslint . --quiet --ext  .ts",
     "prettier:run": "prettier --write '**/*.ts'",
@@ -25,7 +27,7 @@
     "test:cover": "yarn test --coverage",
     "start": "node -r dotenv/config dist/src/index.js dotenv_config_path=./config/.env",
     "clean": "concurrently 'rm -rf dist' 'rm -rf coverage'",
-    "perf:test": "artillery quick --duration 200 --rate 10 http://localhost:8000/api/v1/example?name=test"
+    "perf:test": "artillery quick --duration 2000 --rate 20 http://localhost:8000/api/v1/example?name=test"
   },
   "dependencies": {
     "@qest/error-utils": "^1.0.1",

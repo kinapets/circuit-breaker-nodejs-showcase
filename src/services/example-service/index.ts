@@ -1,23 +1,38 @@
 import CircuitBreaker from 'opossum';
+import axios from 'axios';
 import { addBreakerToStats } from '../hystrix-metrics';
 export class ExampleService {
-    private breaker: CircuitBreaker<[string], string>;
+    private firstService: CircuitBreaker<[string], string>;
+    private secondService: CircuitBreaker<[string], string>;
 
     constructor() {
-        const breakerSettings: CircuitBreaker.Options = {
-            name: 'helloo',
+        const firstBreakerSettings: CircuitBreaker.Options = {
+            name: 'firstService',
+            errorThresholdPercentage: 120, // for showcase  - never will be open
         };
-        this.breaker = new CircuitBreaker(async (name: string) => {
-            if (Math.random() < 0.2) {
-                throw Error('Something went wrong');
-            }
+        this.firstService = new CircuitBreaker(async (name: string) => {
+            await axios.get('http://localhost:8082');
             return name;
-        }, breakerSettings);
+        }, firstBreakerSettings);
 
-        addBreakerToStats(this.breaker);
+        const secondBreakerSettings: CircuitBreaker.Options = {
+            name: 'secondService',
+            errorThresholdPercentage: 120, // for showcase
+        };
+        this.secondService = new CircuitBreaker(async (name: string) => {
+            await axios.get('http://localhost:8083');
+            return name;
+        }, secondBreakerSettings);
+
+        addBreakerToStats(this.firstService);
+        addBreakerToStats(this.secondService);
     }
 
-    async getExample(name: string) {
-        return this.breaker.fire(name);
+    async getDataFromFirstService(name: string) {
+        return this.firstService.fire(name);
+    }
+
+    async getDataFromSecondService(name: string) {
+        return this.secondService.fire(name);
     }
 }

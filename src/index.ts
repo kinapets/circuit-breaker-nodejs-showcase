@@ -27,19 +27,9 @@ const createHystrixDashboard = (portNumber = 8081): void => {
     app.use(router).listen(portNumber, () => logger.info('[Express] Hystrix dashboard listening at %s', portNumber));
 };
 
-const createSimpleService = (portNumber = 8082) => {
-    const router = expressApp.Router().use('/', async (req, res, _) => {
-        res.json({ iAmListeningOnPort: portNumber });
-    });
-
-    const app = expressApp();
-    app.use(router).listen(portNumber, () => logger.info('[Express] Simple service dashboard listening at %s', portNumber));
-};
-
 export const listen = () => {
     createHystrixDashboard();
-    createSimpleService();
-    createSimpleService(8083);
+
     return express
         .listen(config.port, () => {
             logger.info('[Express] Listening at %s', config.port);

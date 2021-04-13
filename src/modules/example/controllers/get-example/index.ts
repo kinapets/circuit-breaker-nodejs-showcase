@@ -10,7 +10,10 @@ export const createGetExampleController = (exampleService: ExampleService) => as
     next: NextFunction,
 ) => {
     try {
-        const response = await exampleService.getExample(req.query.name);
+        const response = await Promise.all([
+            exampleService.getDataFromFirstService(req.query.name),
+            exampleService.getDataFromSecondService(req.query.name),
+        ]);
 
         res.status(httpCodes.OK).json({ hello: response });
     } catch (e) {
