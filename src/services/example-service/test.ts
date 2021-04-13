@@ -2,7 +2,7 @@ import { ExampleService } from '.';
 
 describe('Example service', () => {
     const testBar = 'testBar';
-    const exampleService = new ExampleService(testBar);
+    const exampleService = new ExampleService();
 
     it('should return example object with foo and bar attributes', async () => {
         const testId = 'hello';

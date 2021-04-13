@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { Request } from 'express';
 
 export const ExampleQuerySchema = t.type({
-    id: t.string,
+    name: t.string,
 });
 
 export const ExampleResponseBodySchema = t.type({

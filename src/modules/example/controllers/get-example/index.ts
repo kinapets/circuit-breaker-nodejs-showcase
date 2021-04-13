@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import * as httpCodes from 'http-codes';
-import { ExampleRequest, ExampleResponseBody, ExampleResponseBodySchema } from '../../models';
-import { validateModel } from '../../../../utils';
+import { ExampleRequest } from '../../models';
+
 import { ExampleService } from '../../../../services';
 
 export const createGetExampleController = (exampleService: ExampleService) => async (
@@ -10,9 +10,9 @@ export const createGetExampleController = (exampleService: ExampleService) => as
     next: NextFunction,
 ) => {
     try {
-        const response = exampleService.getExample(req.query.id);
+        const response = await exampleService.getExample(req.query.name);
 
-        res.status(httpCodes.OK).json(validateModel<ExampleResponseBody, ExampleResponseBody>(response, ExampleResponseBodySchema));
+        res.status(httpCodes.OK).json({ hello: response });
     } catch (e) {
         return next(e);
     }
